@@ -30,34 +30,34 @@
  <hr>
   <h1>Post-construction and (optional) generation of the iso</h1>
    <h2>Introduction</h2>
-    <p>If you're done with pass2 successfully, you have then all the packages needed for a basic system.</p>
-    <p>We can now finalise our NuTyX and adapt it to our needs. And then, we can produce an installable ISO if we want to.</p>
-    <p>It's time to decide what you still need, at this point of progress your NuTyX:</p>
+    <p>If you have carried out pass2 successfully, you have all the packages needed for a basic system.</p>
+    <p>We can now finalise our NuTyX and adapt it to our needs. Then we can produce an installation ISO if we want to.</p>
+    <p>It's time to decide what you still need, at this point in designing your NuTyX system:</p>
    <ol>
-    <li>Do not have a kernel</li>
-    <li>Do not contain a boot program</li>
-    <li>Do not contain any other formating tools then the one for ext3, ext4</li>
-    <li>Do not contain any tool for RAID management</li>
-    <li>Can not connect to a dhcp server and get a dynamic address</li>
-    <li>Do not contain a text editor</li>
+    <li>You do not have a kernel</li>
+    <li>You do not have a bootloader</li>
+    <li>You do not have any formating tools other than those for ext3 and ext4 filesystems</li>
+    <li>You not have any tools for RAID management</li>
+    <li>You cannot yet connect to a dhcp server and get a dynamic address</li>
+    <li>You do not have a text editor</li>
    </ol>
-    <p>On the other hand your NuTyX contains some services that you most probably will never use.</p> 
+    <p>On the other hand your NuTyX contains some services that you probably will never use.</p> 
    <h2>How to go on</h2>
-    <p>It's now time for you to decide what you need. A boot system, a kernel, your favorit filesystem, logical volume or RAID and your ip adress dynamic or static</p>
-    <p>Before that we need to configure a minimum the 'cards' package manager and downloads all the ports containing the building receipes of all the available NuTyX packages</p>
+    <p>It's now time for you to decide what you need: a bootloader, a kernel, tools for your favorite filesystem, logical volume or RAID and your ip address (dynamic or static)</p>
+    <p>Before that we need a minimum configuration for the 'cards' package manager and downloads for all the ports containing the building receipes of all the available NuTyX packages</p>
     <ol>
-     <li>We start to exit from the NuTyX</li>
+     <li>We start by exiting from NuTyX</li>
       <pre class="command"><kbd>exit</kbd></pre>
       <p>We check if the LFS variable is still set</p>
       <pre class="command"><kbd>echo $LFS</kbd></pre>
-      <p>It must return something</p>
+      <p>It should return something</p>
       <pre class="output">/mnt/lfs</pre>
-     <li>We can now reenter in the new NuTyX to finalise the job</li>
+     <li>We can now reenter the new NuTyX to finalise the job</li>
       <pre class="command"><kbd>chroot $LFS /usr/bin/env -i HOME=/root TERM="$TERM" PS1='\u: \w\$' \
 /bin/bash --login</kbd></pre>
-No error should be print:
+No error should be printed:
       <pre class="output">root [ / ]# </pre>
-     <li>We begin by adjusting the cards.conf file. We used from now on only the recept coming from the git project. You need to adapt the language if necessary.</li>
+     <li>We begin by adjusting the cards.conf file. From now on we will use only recipes from the git project. You need to adapt the language if necessary.</li>
     <pre class="command"><kbd>cat &gt; /etc/cards.conf &lt;&lt; "EOF"
 dir /usr/ports/gui-extra
 dir /usr/ports/gui
@@ -69,7 +69,7 @@ locale de
 base /usr/ports/base
 base /usr/ports/base-extra
 EOF</kbd></pre>
-     <li>We can now download all the availables ports and compile the receipts we want ( as long the collections are corrected configured in the cards.conf file above )</li>
+     <li>We can now download all the available ports and compile from the recipes we want ( as long the collections are correctly configured in the cards.conf file above )</li>
       <pre class="command"><kbd>ports -u</kbd></pre>
       <pre class="output">...</pre>
       <p>We are now ready to finalise our NuTyX</p>
@@ -79,63 +79,63 @@ EOF</kbd></pre>
      <li>
       <h3>Kernel compilation</h3>
      </li>
-      <p>The kernel will be the only mandatory package, without it your NuTyX will never be able to start and run. You can choose different possibilities:</p>
+      <p>The kernel is the only mandatory package. Without it your NuTyX system will never be able to start and run. You can choose two different options:</p>
        <ol>
         <li>
-         <h4>Compilation of one of the available ports kernel</h4>
+         <h4>Build one of the kernels available as ports</h4>
         </li>
-          <p>This choice is mandatory if you plan to produce an installable ISO. It's also the most simple choice:</p>
+          <p>This choice is mandatory if you plan to produce an installable ISO. It's also the simplest choice:</p>
           <pre class="command"><kbd>cd /usr/ports/base-extra/kernel-lts
 pkgmk -d -i</kbd></pre>
-          <p>Replaces the name 'kernel-lts' by 'kernel' if you prefer the latest stable</p>
+          <p>Replace the name 'kernel-lts' by 'kernel' if you prefer the latest stable kernel</p>
         <li>
-         <h4>Compile your own kernel</h4>
+         <h4>Build your own kernel</h4>
         </li>
-         <p>This choice means that the generation of an installable ISO will be not possible</p>
-         <p>Vous can follow the article explaining how to <a href="build-kernel.html">compile your own kernel</a> or you will find many tutos about kernel compilation on the net</p>
+         <p>This choice means that you cannot generate an installable ISO. However you can have a kernel that perfectly matches your current hardware with no unnecessary extras</p> 
+         <p>You can follow the article explaining how to <a href="build-kernel.html">compile your own kernel</a> or you will find many tutorials about kernel compilation on the net</p>
        </ol>
      <li>
       <h3>Remove unnecessary services(recommended)</h3>
      <li>
-      <p>During the construction of your NuTyX, services ssh and rsync have been automatically installed. If you not plan to activate a rsync server or not plan to remote acces your machine, it's strongly recommenended to deactivate thoses services. Even if you don't know what's are they, do:
+      <p>During the construction of your NuTyX system, the ssh and rsync services were automatically installed. If you do not plan to activate a rsync server or to allow remote access to your machine, it is strongly recommended to deactivate these services. Even if you don't know what they are, do:
       <pre class="command"><kbd>cards remove openssh.service
 cards remove rsync.service</kbd></pre>
-      <h3>Add grub the boot process tool (optional)</h3>
+      <h3>Add the grub bootloader (optional)</h3>
      </li>
-      <p>The grub package is ony need if you decide to produce an installable ISO or if you don't have any boot procedure yet on your machine (most probably you already have one):</p>
+      <p>The grub package is only needed if you wish to produce an installable ISO or if you don't yet have a bootloader on your machine (most probably you already have one):</p>
       <pre class="command"><kbd>cards depcreate grub</kbd></pre>
-      <p>Once grub is installed, you will be able to setup your boot process via the command line or later via the generated ISO</p>
+      <p>Once grub is installed, you will be able to set up your boot process via the command line or later via the generated ISO</p>
      <li>
-      <h3>Adding other files system supports (optional)</h3>
+      <h3>Adding support for other filesystems (optional)</h3>
      </li>
-      <p>The following files systems are availables:</p>
+      <p>The following filesystems are available:</p>
       <pre class="command"><kbd>cards depcreate btrfs-progs</kbd></pre>
       <pre class="command"><kbd>cards depcreate xfsprogs</kbd></pre>
       <pre class="command"><kbd>cards depcreate reiserfsprogs</kbd></pre>
       <pre class="command"><kbd>cards depcreate jfsutils</kbd></pre>
-      <p>Choose your favorit one or leave it as ext3 , ext4 </p>
+      <p>Choose your favorite or leave it as ext3/ext4 </p>
      <li>
-      <h3>Adding the logical partitons tools and RAID (optional)</h3>
+      <h3>Adding logical partition tools and RAID (optional)</h3>
      </li>
-      <p>If you are using RAID system:</p>
+      <p>If you are using a RAID system:</p>
       <pre class="command"><kbd>cards depcreate mdadm</kbd></pre>
      <li>
       <h3>Adding a dhcp client to be able to obtain a dynamic IP adress (optional)</h3>
      </li>
-      <p>If you don't want to use a fix ip adress, you will need a dhcp client tool:</p>
+      <p>If you don't want to use a fixed IP address, you will need a dhcp client tool:</p>
       <pre class="command"><kbd>cards depcreate dhcpcd</kbd></pre>
      <li>
       <h3>Adding a text editor (optional)</h3>
      </li>
-      <p>The installeur in the generated ISO use the command 'vi' to edit your grub file, you can choose between:</p>
+      <p>The installer in the generated ISO uses the <b>vi</b> command to edit your grub file. If you do not like vi, you can choose between:</p>
       <pre class="command"><kbd>cards depcreate e3</kbd></pre><p>and</p>
       <pre class="command"><kbd>cards depcreate vim</kbd></pre>
      <li>
-      <h3>Adding the NFS support (optional)</h3>
+      <h3>Adding NFS support (optional)</h3>
      </li>
       <p>If you don't use or don't know about <a href="https://en.wikipedia.org/wiki/Network_File_System">NFS</a>, you can ignore this option:</p>
       <pre class="command"><kbd>cards depcreate nfs-utils</kbd></pre>
-      <p>Like for the sshd and rsync services, if you don't need a NFS serveur. do:
+      <p>Like for the sshd and rsync services, if you don't need a NFS server. do:
       <pre class="command"><kbd>cards remove nfs-utils.service</kbd></pre>
      </ol>
   <h2>Option1: Produce an installable ISO</h2>
@@ -152,8 +152,8 @@ cards remove rsync.service</kbd></pre>
     <pre class="output">'/boot/kernel-3.19.3' -&gt; '/ISO/isolinux/kernel'</pre>
     <pre class="command"><kbd>cp -v /boot/initrd-* /ISO/isolinux/initrd</kbd></pre>
     <pre class="output">'/boot/initrd-3.19.3' -&gt; '/ISO/isolinux/initrd'</pre>
-    <div class="note"><img alt="[Note]" src="../graphics/note.gif" />Consult options at the botton of the page before going further if you want to customize your ISO by adding some packages or if you want to get rid of the binaries archives and build logs to reduce the size of your ISO.</div>
-    <li>We produce the squashfs files used by the iso and erase the existing one if necessary as the mksquashfs command is not able to overight existing file.</li>
+    <div class="note"><img alt="[Note]" src="../graphics/note.gif" />Consult options at the botton of the page before going further if you want to customize your ISO by adding some packages or if you want to get rid of the binary archives and build logs to reduce the size of your ISO.</div>
+    <li>We produce the squashfs filesystem used by the ISO, and erase the existing one if necessary, as the mksquashfs command is not able to overwrite existing files.</li>
     <pre class="command"><kbd>mkdir -p /ISO/isolinux/boot/
 cd /
 for dir in opt bin etc lib root run sbin usr var home
@@ -161,10 +161,10 @@ do
   [ -f ISO/isolinux/boot/$dir.squashfs ] && rm ISO/isolinux/boot/$dir.squashfs
   mksquashfs $dir ISO/isolinux/boot/$dir.squashfs
 done</kbd></pre>
-    <li>We can now go out of NuTyX and produce the iso</li>
+    <li>We can now leave NuTyX and produce the ISO image</li>
     <pre class="command"><kbd>exit</kbd></pre>
-    <li>We can finally generate our ISO where the version is the date of today.</li>
-    <div class="important"><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" />Before you start the next command, make shure the <b>LFS</b> variable is still set and the commands <b>mkisofs</b> and <b>isohybrid</b> are available on your host linux distribution. They are belonging to <b>cdrkit</b> and <b>syslinux</b> packages.</div>
+    <li>We can finally generate our ISO where the version is today's date.</li>
+    <div class="important"><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" />Before you start the next command, make sure the <b>LFS</b> variable is still set and the commands <b>mkisofs</b> and <b>isohybrid</b> are available on your host linux distribution. They are belonging to the <b>cdrkit</b> and <b>syslinux</b> packages respectively.</div>
     <pre class="command"><kbd>sh $LFS/root/development/scripts/mkiso houaphan-`date +%Y%m%d`</kbd></pre>
     <pre class="output">Warning: creating filesystem that does not conform to ISO-9660.
 I: -input-charset not specified, using utf-8 (detected in locale settings)
@@ -213,19 +213,19 @@ dev   ISO   mnt    proc                                   sbin  sys      tools</
 269484032 bytes (269 MB) copied, 66.4757 s, 4.1 MB/s</pre>
   </ol>
    <p>Congratulations, you have now a new base system NuTyX in your hands ready to be installed on all yours machines.</p>
-  <h2>Options2: Reduce the size of your final ISO.</h2>
+  <h2>Option 2: Reduce the size of your final ISO.</h2>
    <ol>
-    <li>If you want to reduce the size of the final ISO, you can remove the binaries archives and the logs, they won't be needed. If you want to keep the archives, give the following command</li>
+    <li>If you want to reduce the size of the final ISO, you can remove the binary archives and the logs; they are not needed any more. If you want to keep the archives, give the following command</li>
      <pre class="command"><kbd>rsync -a /root/development/base/ /base/
 rsync -a /root/extra/base-extra/ /base-extra/</kbd></pre>
-     <p>no error should be printout</p>
+     <p>no error should be printed.</p>
      <p>We can now delete the binaries from the git</p>
      <pre class="command"><kbd>find /root/ -name "*.cards.*" -exec rm -v {} \;</kbd></pre>
-     <p>no error should be printout</p>
+     <p>no error should be printed.</p>
      <p>We erase the logs</p>
      <pre class="command"><kbd>mv /root/logs /logs</kbd></pre>
      <p>If needed, binaries and logs are stored at the root directory of the new produced NuTyX</p>
-    <li>The compiled kernel is very big in space. If you want to reduce the size of your iso, you can delete the documentation and the sources of the kernel:</li>
+    <li>The compiled kernel takes up a lot of space. If you want to reduce the size of your ISO, you can delete the kernel sources and documentation:</li>
      <pre class="command"><kbd>pkgrm kernel.doc
 pkgrm kernel.devel</kbd></pre>
   </ol>

@@ -4,7 +4,7 @@
 	<!-- En-tête de la page -->
         <meta charset="utf-8" />
         <link rel="stylesheet" href="../css/nutyx.css" />
-        <title>NuTyX Preparation of the construction</title>
+        <title>NuTyX Preparating for the build</title>
     </head>
     <body>
     <table>
@@ -28,24 +28,24 @@
      </tr>
     </table>
   <hr>
-   <h1>Preparation of the construction</h1>
-    <h2>Option</h2>
-    <p>If you did already once the all process, it's necessary to remove the user (and its group it belong) and the home directory of the user lfs</p>
-    <p>So if you need to do it, remove all existing stuff:</p>
+   <h1>Preparing for the build</h1>
+    <h2>A clean start</h2>
+    <p>If you have already done a NuTyX build before, you must start by removing the lfs user, the lfs group and the lfs user's home directory</p>
+    <p>So if you need to do this, remove all existing stuff:</p>
     <pre class="command"><kbd>userdel lfs
 rm -r /home/lfs</kbd></pre>
-    <p>Normally, by remove the user, the group is removed as well. If not shure give a try, it will not hurt</p>
+    <p>Normally removing the user removes the group as well. If you are not sure about this, you can remove the group explicitly; it won't do any harm.</p>
     <pre class="command"><kbd>groupdel lfs</kbd></pre>
    <h2>Partition preparation</h2>
-    <p>To be able to start the first pass without major trouble, let's see what's has to be done. It's quite straigtforward.</p>
-    <p>Normaly if we build a linux distribution, it's necessary to plan a partition where to put it's construction. It's actually not a must, as it's possible to build the distribution in a folder and then make a backup of it on a USB key or directly use the command rsync to transfer it on the destination disk or partition.</p>
-    <p>So if you decide to use a dedicate partition, it's time to format it in the file system of your choice and then you mount it on the folder defined by the LFS variable.</p>
-    <p>In all the articles we will used the same folder:</p>
+    <p>To be able to start the first pass without major trouble, let's see what has to be done. It's quite straigtforward.</p>
+    <p>Normally when you build a Linux distribution, you create a partition to put it on. This is not actually essential: it is quite possible to build the distribution in a folder and then copy it onto a USB key, or use the rsync command to transfer it directly onto the destination disk or partition.</p>
+    <p>If you do decide to use a dedicated partition, you must now format it with the file system of your choice, then mount it on the folder you have defined by the LFS variable.</p>
+    <p>In this guide, we will use the same folder throughout:</p>
     <pre class="command"><kbd>/mnt/lfs</kbd></pre>
-    Ones your partition formated, it's time to create the folder and mount your partition on it. In my example, I choose the second partition of the first disk, you should adjust thoses settings to your choice.
+    Once your partition is formatted, create the folder and mount your partition on it. In my example, I shall be using the second partition of the first disk. Obviously you should adjust these commands to reflect your own choice.
     <pre class="command"><kbd>mkdir /mnt/lfs
 mount /dev/sda2 /mnt/lfs</kbd></pre>
-    <p>Remember to always mount this partition prior to start the pass 1 or 2. Ones the partition is monted, we can start the first pass.</p>
+    <p>Remember always to mount this partition before starting pass 1 or 2. Once the partition is mounted, we can start the first pass.</p>
   <div class="pied_page"><a class="url" href="build-pass-1.html">It's time to begin with the pass 1...</a></div>
   <hr>
   <p class="updated">Last updated on 2015-01-16 18:47:00</p>

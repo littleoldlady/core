@@ -31,28 +31,28 @@
   <hr>
    <h1>Build bot Setup</h1>
     <h2>Introduction</h2>
-     <div class="important"><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" />It's higly recommended to knows NuTyX very well to succeed with this tuto.</div>
-     <div class="note"><img alt="[Note]" src="../graphics/note.gif" />In this tuto, the <b>/home/tnut</b> folder is used, you <u>have to</u> it with <u>yours</u>.</div>
-     <div class="note"><img alt="[Note]" src="../graphics/note.gif" />In this tuto, we use a <b>64 bits</b> machine, if you're using a <b>32 bits</b> machine, you need to replace the term in every concerned commands <b>x86_64</b> with <b>i686</b>.</div>
-     <div class="note"><img alt="[Note]" src="../graphics/note.gif" />In this tuto, we choose the <b>kde5</b> collection, if you want to compile <b>mate</b>, <b>enlightenment</b>, <b>lxde</b>, <b>gnome</b> ou <b>xfce4</b>, you need to remplace the word <b>kde5</b> in every concerned command with one of the collection.</div>
-     <div class="note"><img alt="[Note]" src="../graphics/note.gif" />In this tuto, we choose to compile the development branch, means the master git, if you want to use the stable branche replace the <b>development</b> branch with the <b>stable</b>. For the git command, you specify the <b>8.1</b> branch when cloning</div>
-    <h2>Each step</h2>
+     <div class="important"><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" /><img alt="[Important]" src="../graphics/caution.gif" />You need to know NuTyX very well to succeed with this tutorial.</div>
+     <div class="note"><img alt="[Note]" src="../graphics/note.gif" />In this tutorial, the <b>/home/tnut</b> folder is used; you <u>have to</u> replace it with <u>your</u> home directory.</div>
+     <div class="note"><img alt="[Note]" src="../graphics/note.gif" />In this tutorial, we use a <b>64-bit</b> machine. If you're using a <b>32-bit</b> machine, you need to replace the term <b>x86_64</b> with <b>i686</b> in every relevant command.</div>
+     <div class="note"><img alt="[Note]" src="../graphics/note.gif" />In this tutorial, we choose the <b>kde5</b> collection for our desktop. If you want to compile <b>mate</b>, <b>enlightenment</b>, <b>lxde</b>, <b>gnome</b> or <b>xfce4</b>, you will need to replace the word <b>kde5</b> in each relevant command with the appropriate collection.</div>
+     <div class="note"><img alt="[Note]" src="../graphics/note.gif" />In this tutorial, we choose to compile the development branch (the git master). If you want to use the stable branch replace <b>development</b> with the <b>stable</b> throughout. For the git command, you specify the <b>8.1</b> branch when cloning</div>
+    <h2>Necessary steps</h2>
      <p>We will:</p>
      <ol>
       <li>get the tools</li>
       <li>put the folders in place</li>
       <li>get the binaries from the remote server</li>
-      <li>get all the recepts</li>
+      <li>get all the recipes</li>
       <li>setting up the configuration files</li>
       <li>launch the necessary services</li>
      </ol>
     <h2>Setting up</h2>
      <h3>The tools (packages to install)</h3>
-      <p>We suppose that your NuTyX is clean from any devel package. We start to install all the utilities:</p>
+      <p>We suppose that your NuTyX initially contains no .devel packages. We begin by installing all the utilities we will need:</p>
       <pre class="command_user"><kbd>get rsync tar wget gawk git nfs-utils \
 nfs-utils.service apache apache.service</kbd></pre>
      <h3>Put the folders in place</h3>
-      <p>A build bot requires a lot of space. In this explaination a dedicated partition is used, this partition is mount on the personnal folder of the user.</p>
+      <p>A build bot requires a lot of space. In this tutorial, a dedicated partition is used. This partition will be mounted on the user's home folder.</p>
       <p>At least 40 Gb of space is perfect</p>
       <p>All the needed folders are in:</p>
       <pre class="output">/home/tnut/NuTyX</pre>
@@ -60,19 +60,19 @@ nfs-utils.service apache apache.service</kbd></pre>
       <pre class="command_user"><kbd>mkdir -pv \
 ~/NuTyX/{remote,local/logs/x86_64/development/kde5,git/development,sources,chroot/development}</kbd></pre>
      <h3>Get the binaries from the remote server</h3>
-      <p>It's the longuest manipulation so let's open another terminal so that we can continue the settings while this process is going on:</p>
+      <p>This is the longest stage so let's open another terminal from which we can continue the settings while this process is going on:</p>
       <p>This command might take some time if your connection is not very fast</p>
       <div class="note"><img alt="[Note]" src="../graphics/note.gif" />You need to type this command every time you want to resync your local copy with the remote server</div>
       <pre class="command_user"><kbd>rsync -av --delete rsync://downloads.nutyx.org/nutyx/x86_64/ \
 /home/tnut/NuTyX/remote/x86_64/</kbd></pre>
-     <h3>Get all the recept</h3>
-      <p>Back to the first terminal to get all the recepts for the compilation:</p>
+     <h3>Get all the recipes</h3>
+      <p>Back to the first terminal to get all the recipes for the compilation:</p>
       <pre class="command_user"><kbd>git clone git://github.com/NuTyX/core.git ~/NuTyX/git/development/core
 git clone git://github.com/NuTyX/kde5.git ~/NuTyX/git/development/kde5</kbd></pre>
       <div class="note"><img alt="[Note]" src="../graphics/note.gif" />If you choose the <b>stable</b> branch, you need to add the option -b 8.1 at the following command:
       <pre class="command_user"><kbd>git clone git://github.com/NuTyX/kde5.git -b 8.1 ~/NuTyX/git/stable/kde5</kbd></pre>
 </div>
-      <p>From now on, all the rest will be done in the root account:</p>
+      <p>From now on, everything will be done in the root account:</p>
       <pre class="command_user"><kbd>su -</kbd></pre>
      <h3>Setting up the configuration files</h3>
       <p>We need to setup 3 new configuration files and adjust 2 existing ones</p>
@@ -141,16 +141,16 @@ ln -sv /home/tnut/NuTyX/chroot/development /development</kbd></pre>
       <pre class="command"><kbd>/etc/rc.d/init.d/httpd start
 /etc/rc.d/init.d/nfs-server start</kbd></pre>
       <p>They should be no errors printing out</p>
-   <h2>Finalisation and step to reproduce</h2>
-     <p>You're now ready to work with the compilation script. The command below need to be reproduce in three cases:</p>
+   <h2>Final stage</h2>
+     <p>You are now ready to work with the compilation script. The command below must be used:</p>
       <ol>
-       <li>The first time</li>
-       <li>When you did something wrong with your chroot and then with your own binaries</li>
-       <li>When you want to come back on the officiel binaries from the server</li>
+       <li>Before compiling for the first time</li>
+       <li>After making a serious error in your chroot and therefore with your own binaries</li>
+       <li>When you want to return to the official binaries from the server</li>
       </ol>
      <pre class="command"><kbd>rsync -av --delete  /home/tnut/NuTyX/remote/x86_64/ /home/tnut/NuTyX/local/x86_64/</kbd></pre>
    <h2>Let's go</h2>
-    <p>If you did all the steps correctly, you should be able to start the compilation of your <b>kde5</b> and <b>kde5-extra</b> collections.</p>
+    <p>If you carried out all the steps correctly, you should be able to start the compilation of your <b>kde5</b> and <b>kde5-extra</b> collections.</p>
     <pre class="command"><kbd>bash bin/enter-nutyx /development/kde5</kbd></pre>
   <hr>
   <p class="updated">

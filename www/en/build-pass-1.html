@@ -28,20 +28,20 @@
      </tr>
     </table>
   <hr>    
-    <h1>Building of the CHROOT (pass 1)</h1>
-    <p>In this first pass we will build up a chroot environnement which will be used to build a NuTyX in a second pass. If you choose to use a separate artition, it should be mounted now. When done we can go on.</p>
+    <h1>Building the CHROOT (pass 1)</h1>
+    <p>In this first pass we will build up a chroot environment which will be used to build NuTyX in a second pass. If you have chosen to use a separate partition, it should be mounted now. When done we can go on.</p>
     <p>We start by creating folders, links and the right user account for the building of the first pass.</p>
-    <p>The first part of preparation is done via the root account and the second directly in the unpriviledge account LFS.</p>
-    <p>The building time of the first pass can varie between 1 hour( with an 8 cores processor)  and probably 1 night(with a single core 32 bits).</p>
-    <p>It's a summary of what has to be done before starting the various scripts which will do all the job automatically.</p>
-    <p>Note that in this article, we use only a folder and not a partition. It's possible to build the CHROOT in a folder.</p>
-    <p>A few warning prior to start:</p>
-    <p>1. Use only the BASH interpreter</p>
-    <p>2. Make shure the tools <b>git</b> and <b>wget</b> are installed, under NuTyX:
+    <p>The first part of this preparation is done using the root account, and the second part directly in the unprivileged account of the lfs user.</p>
+    <p>The build time for the first pass can vary from 1 hour ( with an 8-core processor) to about 1 night (with a single core 32-bit processor).</p>
+    <p>Here is a summary of what has to be done before starting the various scripts which will do all the job automatically.</p>
+    <p>Note that in this article, we will be using only a folder and not a partition. It is quite possible to build the CHROOT in a folder.</p>
+    <p>A few warnings before you start:</p>
+    <p>1. Use only the <b>bash</b> shell, not an alternative shell like <b>dash</b></p>
+    <p>2. Make sure the tools <b>git</b> and <b>wget</b> are installed. Under NuTyX:
     <pre class="command_user"><kbd>get git
 get wget
 get tar</kbd></pre></p>
-    <p>3. If you are under NuTyX 8.0 or saravane, make shure the package (and it's dependencies) cards.devel is installed. In case of:
+    <p>3. If you are under NuTyX 8.0 or Saravane, make sure that the cards.devel package and its dependencies are installed. 
     <pre class="command_user"><kbd>get cards.devel</kbd></pre></p>
     <p>4. Check that all the conditions are fullfill by checking this <a  class="url" href="http://www.linuxfromscratch.org/lfs/view/development/prologue/hostreqs.html" target="_blank">page</a></p>
     <h2>Administrator part:</h2>
@@ -58,8 +58,8 @@ ln -svf $LFS/sources /</kbd></pre>
 <pre class="command"><kbd>groupadd lfs
 useradd -s /bin/bash -g lfs -m -k /dev/null lfs
 passwd lfs</kbd></pre>
-     Enter the password of your choice, it's not absolutly necessaryy if you enter this accound from root.
-     <li>Owner and mode changing of the folders:</li>
+     Enter the password of your choice (this is not absolutely necessary if you are always going to enter this account from root).
+     <li>Changing owner and access mode of the folders:</li>
 <pre class="command"><kbd>chown -v lfs $LFS/{tools,sources}
 chmod -v a+wt $LFS/sources
 chown -v lfs $LFS</kbd></pre>
@@ -77,26 +77,26 @@ PATH=/home/lfs/bin:/tools/bin:/bin:/usr/bin
 export LFS LC_ALL LFS_TARGET PATH" &gt; /home/lfs/.bashrc</kbd></pre>
 
      </ol>
-     Time to go on with the LFS unprivildge user part: 
+     Time to switch to the unprivileged lfs user: 
 <pre class="command"><kbd>su - lfs</kbd></pre>
 
      <h2>LFS part:</h2>
-     <p>From now on, you should type all the commands as lfs user.</p>
+     <p>From now on, you should type all the commands as the lfs user.</p>
      <p>we get the latest version of the source code from git:</p>
 <pre class="command_user"><kbd>git clone git://github.com/NuTyX/core.git development</kbd></pre>
-    <p>Ones this is done, a new folder is created: <b>development</b>. We enter in it and launch the first script:</p>
+    <p>Ones this is done, a new folder is created: <b>development</b>. We enter it and launch the first script:</p>
 <pre class="command_user"><kbd>cd development
 scripts/runmebeforepass1</kbd></pre>
-    <p>The script will check a serie of verification and NO error should occur. The downloading of the sources will start automatically. When it's finish you just have to follow instructions.</p>
+    <p>The script will carry out a series of checks; NO error should occur. The downloading of the sources will start automatically. When it has finished, you just have to follow instructions.</p>
    
     <p>If everything went well, you should read the following messages:</p>
-    <pre class="output">=====&gt; Successfull configured</pre>
+    <pre class="output">=====&gt; Successfully configured</pre>
 
-If your read this, congratulations you are ready to launch the first pass for the construction of your future NuTyX, do:    
+If your read this, congratulations! You are ready to launch the first pass for the construction of your future NuTyX. Type:    
 <pre class="command_user"><kbd>cd /home/lfs/development/chroot
 pass</kbd></pre>
 
-<p>Let's the show begin ... </p>
+<p>Let the show begin! ... </p>
 
 <pre class="output">+ mkdir -pv /mnt/lfs/var/lib/pkg/DB
 mkdir: created directory '/mnt/lfs/var'
@@ -105,8 +105,8 @@ mkdir: created directory '/mnt/lfs/var/lib/pkg'
 mkdir: created directory '/mnt/lfs/var/lib/pkg/DB'
 =======&gt; Building '/home/lfs/development/chroot/cards/Pkgfile' succeeded.
 /home/lfs/development/chroot</pre>
-    <p>Note that you can follow the evolution of the construction and then check that everything goes well by consulting the folder /home/lfs/logs/chroot/ . For each build package is a log corresponding</p>
-  <div class="pied_page"><a class="url" href="build-pass-2.html">We will see in a next article how to enter the chroot and to build a NuTyX from scratch by using a second time the same script.</a></div>
+    <p>Note that you can follow the build process and check that everything goes well by consulting the folder /home/lfs/logs/chroot. For each build package there is a corresponding log.</p>
+  <div class="pied_page">We will see in the <a class="url" href="build-pass-2.html">next article</a> how to enter the chroot and build NuTyX from scratch by using the same script for a second time.</div>
   <hr>
   <p class="updated">Last updated on 2016-05-29 18:21</p>
     <footer>
